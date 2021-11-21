@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 export const AttendeeSchema = new Schema(
   {
     eventId: { type: String, required: true, ref: 'Event' },
+    ticketId: { type: String, required: true },
     accountId: { type: Schema.Types.ObjectId, ref: 'Account' }
   },
   { timestamps: true, toJSON: { virtuals: true } }
