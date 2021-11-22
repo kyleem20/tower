@@ -7,11 +7,11 @@ export const EventSchema = new Schema(
     description: { type: String, required: true },
     coverImg: { type: String, required: true },
     location: { type: String, required: true },
-    capacity: { type: String, required: true },
+    capacity: { type: Number, required: true },
     startDate: { type: Date, required: true },
-    isCancelled: { type: Boolean, default: false },
+    isCanceled: { type: Boolean, default: false, required: true },
     type: { type: String, enum: ['concert', 'sport', 'digital', 'convention'], required: true },
-    creatorId: { type: Schema.Types.ObjectId, ref: 'Profile', required: true }
+    creatorId: { type: mongoose.Types.ObjectId, ref: 'Profile', required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

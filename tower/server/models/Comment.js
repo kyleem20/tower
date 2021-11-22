@@ -3,9 +3,10 @@ const Schema = mongoose.Schema
 
 export const CommentSchema = new Schema(
   {
-    body: { type: String, required: true, ref: 'Event' },
+    body: { type: String, required: true },
     eventId: { type: String, required: true, ref: 'Event' },
-    accountId: { type: Schema.Types.ObjectId, ref: 'Account' }
+    accountId: { type: Schema.Types.ObjectId, ref: 'Account' },
+    isAttending: { type: Boolean, default: false, required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

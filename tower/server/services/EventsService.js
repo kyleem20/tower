@@ -1,45 +1,101 @@
 import { dbContext } from '../db/DbContext'
-import { logger } from '../utils/Logger'
 import { BadRequest, Forbidden } from '../utils/Errors'
 
 class EventsService {
-  constructor() {
-    logger.log('event service is here')
-  }
-
   async getAll(query = {}) {
-    return await dbContext.Event.find(query).populate('creator', 'name')
+    const events = await dbContext.Events.find(query)
+      .populate('creator')
+    return events
   }
 
   async getById(id) {
-    const event = await dbContext.Event.findById(id).populate('creator', 'name')
+    const event = await dbContext.Events.findById(id)
+      .populate('creator')
     if (!event) {
       throw new BadRequest('Invalid Id')
     }
     return event
   }
 
-  async create(body) {
-    const newEvent = await dbContext.Event.create(body)
-    return newEvent.populate('creator', 'name')
+  async create(data) {
+    const event = await dbContext.Events.create(data)
+    await event.populate('creator')
+    return event
   }
 
-  async remove(eventId, userId) {
-    const event = await this.getById(eventId)
-    if (event.creatorId.toString() !== userId) {
-      throw new Forbidden('You are not aloud to delete this event')
+  async update(id, data) {
+    const event = await this.getById(id)
+    if (event.creatorId.toString() !== data.creatorId || event.isCanceled === true) {
+      throw new Forbidden('Cannot edit this event!')
     }
-    await dbContext.Event.findByIdAndDelete(eventId)
+    const update = await dbContext.Events.findByIdAndUpdate(id, data, { new: true })
+    return update
   }
 
-  async edit(body) {
-    const event = await this.getById(body.id)
-    if (event.creatorId.toString() !== body.creatorId) {
-      throw new Forbidden('You are not aloud to edit this event')
+  async capacity(id) {
+    const update = await dbContext.Events.findById(id)
+    if (update.capacity <= 0) {
+      throw new BadRequest('This Event is Full')
     }
-    const updateEvent = dbContext.Event.findOneAndUpdate({ _id: body.id }, body, { new: true })
-    return await updateEvent
+    update.capacity--
+    const updated = await dbContext.Events.findByIdAndUpdate(id, update, { new: true })
+    return updated
+  }
+
+  async capacityDecrease(id) {
+    const update = await dbContext.Events.findById(id)
+    update.capacity++
+    const updated = await dbContext.Events.findByIdAndUpdate(id, update, { new: true })
+    return updated
   }
 }
-
 export const eventsService = new EventsService()
+
+// class EventsService {
+//   async getAll(query = {}) {
+//     const events = await dbContext.Events.find(query)
+//       .populate('creator')
+//     return events
+//   }
+
+//   async getById(id) {
+//     const event = await dbContext.Events.findById(id)
+//       .populate('creator')
+//     if (!event) {
+//       throw new BadRequest('Invalid Id')
+//     }
+//     return event
+//   }
+
+//   async create(data) {
+//     const event = await dbContext.Events.create(data)
+//     await event.populate('creator')
+//     return event
+//   }
+
+//   async update(id, data) {
+//     const event = await this.getById(id)
+//     if (event.creatorId.toString() !== data.creatorId || event.isCanceled === true) {
+//       throw new Forbidden('Cannot edit this event!')
+//     }
+//     const update = await dbContext.Events.findByIdAndUpdate(id, data, { new: true })
+//     return update
+//   }
+
+//   async capacity(id) {
+//     const update = await dbContext.Events.findById(id)
+//     if (update.capacity <= 0) {
+//       throw new BadRequest('This Event is Full')
+//     }
+//     update.capacity--
+//     const updated = await dbContext.Events.findByIdAndUpdate(id, update, { new: true })
+//     return updated
+//   }
+
+//   async capacityDecrease(id) {
+//     const update = await dbContext.Events.findById(id)
+//     update.capacity++
+//     const updated = await dbContext.Events.findByIdAndUpdate(id, update, { new: true })
+//     return updated
+//   }
+// }
