@@ -23,7 +23,7 @@ export class AccountController extends BaseController {
 
   async getAttending(req, res, next) {
     try {
-      const attendees = await attendeesService.getAttendeesEvents(req.userInfo.id)
+      const attendees = await attendeesService.getAttendeesByAccount(req.userInfo.id)
       res.send(attendees)
     } catch (error) {
       next(error)

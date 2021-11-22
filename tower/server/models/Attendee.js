@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 export const AttendeeSchema = new Schema(
   {
-    eventId: { type: mongoose.Types.ObjectId, required: true, ref: 'Event' },
-    accountId: { type: mongoose.Types.ObjectId, ref: 'Account' }
+    eventId: { type: Schema.Types.ObjectId, required: true, ref: 'Event' },
+    accountId: { type: Schema.Types.ObjectId, ref: 'Account' }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

@@ -9,9 +9,9 @@ class DbContext {
   Values = mongoose.model('Value', ValueSchema);
   Account = mongoose.model('Account', AccountSchema);
   Profiles = mongoose.model('Profile', ProfileSchema, 'accounts');
-  Events = mongoose.model('Events', EventSchema);
-  Attendees = mongoose.model('Attendees', AttendeeSchema);
-  Comments = mongoose.model('Comments', CommentSchema);
+  Events = mongoose.model('Event', EventSchema);
+  Attendees = mongoose.model('Attendee', AttendeeSchema);
+  Comments = mongoose.model('Comment', CommentSchema);
 }
 
 export const dbContext = new DbContext()
