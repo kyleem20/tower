@@ -18,7 +18,7 @@
       </div>
     </div> -->
     <div class="row">
-      <div class="col-3" v-for="e in events" :key="e.id">
+      <div class="col-md-3 text-dark p-2" v-for="e in events" :key="e.id">
         <Event :event="e" />
       </div>
     </div>
@@ -33,7 +33,6 @@ import Pop from '../utils/Pop'
 import { logger } from '../utils/Logger'
 import { eventsService } from '../services/EventsService'
 import { AppState } from '../AppState'
-
 
 export default {
   setup() {

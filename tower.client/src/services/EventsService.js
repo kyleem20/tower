@@ -3,10 +3,19 @@ import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class EventsService {
-    async getAll(eventQuery = "") {
-        const res = await api.get('api/events' + eventQuery)
+    async getAll() {
+        const res = await api.get('api/events')
         logger.log(res.data)
-        AppState.events = res.data.map(e => new Event(e))
+        // AppState.events = res.data.map(e => new Event(e))
+        AppState.events = res.data
+
+    }
+    setActiveEvent(id) {
+        const found = AppState.events.find(e => e.id === id)
+        if (!found) {
+            throw new Error('Invalid Event Id')
+        }
+        AppState.activeEvent = found
     }
 
     async getById(id) {

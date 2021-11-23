@@ -1,5 +1,5 @@
-export class Event{
-    constructor(data = {}){
+export class Event {
+    constructor(data) {
         this.eventId = data.id
         this.eventName = data.name
         this.description = data.description
