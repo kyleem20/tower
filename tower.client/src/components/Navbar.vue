@@ -18,11 +18,22 @@
       <ul class="navbar-nav me-auto">
         <li>
           <router-link
-            :to="{ name: 'Events' }"
-            class="btn text-success lighten-30 selectable text-uppercase"
+            :to="{ name: 'Home' }"
+            class="btn text-primary lighten-30 selectable text-uppercase"
           >
             Events
           </router-link>
+        </li>
+      </ul>
+      <ul class="navbar-nav me-auto">
+        <li
+          v-if="account.id"
+          class="btn text-primary lighten-30 selectable text-uppercase"
+          data-bs-toggle="modal"
+          data-bs-target="#CreateEvent"
+          title="form"
+        >
+          Create Event
         </li>
       </ul>
       <span class="navbar-text">
@@ -54,7 +65,7 @@
               height="40"
               class="rounded"
             />
-            <span class="mx-3 text-success lighten-30">{{ user.name }}</span>
+            <span class="mx-3 text-primary lighten-30">{{ user.name }}</span>
           </div>
           <div
             class="dropdown-menu p-0 list-group w-100"
@@ -91,6 +102,7 @@ export default {
   setup() {
     return {
       user: computed(() => AppState.user),
+      account: computed(() => AppState.account),
       async login() {
         AuthService.loginWithPopup()
       },

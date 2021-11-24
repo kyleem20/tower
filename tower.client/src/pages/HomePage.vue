@@ -1,25 +1,48 @@
 <template>
-  <div
-    class="
-      home
-      flex-grow-1
-      d-flex
-      flex-column
-      align-items-center
-      justify-content-center
-    "
-  >
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Welcome to the Tower
-      </h1>
+  <div class="events container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-2 selectable" @click="filterSelection('concert')">
+            Concert
+          </div>
+          <div class="col-md-2 selectable">Digital</div>
+          <div class="col-md-2 selectable">Sport</div>
+          <div class="col-md-2 selectable">Convention</div>
+        </div>
+      </div>
+      <div class="col-md-3 text-dark p-2" v-for="e in events" :key="e.id">
+        <Event :event="e" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted } from '@vue/runtime-core'
+import Pop from '../utils/Pop'
+import { logger } from '../utils/Logger'
+import { eventsService } from '../services/EventsService'
+import { AppState } from '../AppState'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    onMounted(async () => {
+      try {
+        await eventsService.getAll()
+      } catch (error) {
+        logger.log(error)
+        Pop.toast('Something went wrong', 'error')
+      }
+    })
+    return {
+      events: computed(() => AppState.events),
+      filterSelection() {
+
+      }
+    }
+  }
 }
 </script>
 

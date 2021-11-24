@@ -11,7 +11,7 @@
       <h2>{{ event.name }}</h2>
       <h5>{{ event.startDate }}</h5>
       <h5>{{ event.location }}</h5>
-      <h5>Remaining Seats: {{ event.capacity }}</h5>
+
       <p v-if="event.capacity > 0">Remaining Seats: {{ event.capacity }}</p>
     </div>
   </router-link>

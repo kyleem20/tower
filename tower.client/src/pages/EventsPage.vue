@@ -1,12 +1,4 @@
-<template>
-  <div class="events container-fluid">
-    <div class="row">
-      <div class="col-md-3 text-dark p-2" v-for="e in events" :key="e.id">
-        <Event :event="e" />
-      </div>
-    </div>
-  </div>
-</template>
+<template></template>
 
 
 <script>
@@ -27,7 +19,8 @@ export default {
       }
     })
     return {
-      events: computed(() => AppState.events)
+      events: computed(() => AppState.events),
+
     }
   }
 }
