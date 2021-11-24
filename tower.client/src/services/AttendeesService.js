@@ -1,5 +1,6 @@
 import { AppState } from "../AppState"
 import { AccountAttendee, EventAttendee } from "../Models/Attendees"
+import { router } from "../router"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
@@ -17,10 +18,11 @@ class AttendeesService {
         AppState.attendees = res.data.map(a => new AccountAttendee(a))
     }
 
-    async create(attendee) {
-        await api.post('api/attendees/', attendee)
-        AppState.myEventsAttending = new EventAttendee(res.data)
-        AppState.attendees.push(new AccountAttendee(res.data))
+    async create(accountId, eventId) {
+        await api.post('api/attendees/', data)
+        AppState.myEventsAttending = new EventAttendee(accountId)
+        AppState.attendees.push(new AccountAttendee(eventId))
+        router.push({ path: '/events/' + eventId })
     }
 
     async remove(id) {
