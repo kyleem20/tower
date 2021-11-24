@@ -2,6 +2,7 @@ import { AppState } from "../AppState"
 import { AccountAttendee, EventAttendee } from "../Models/Attendees"
 import { router } from "../router"
 import { logger } from "../utils/Logger"
+import { accountService } from "./AccountService"
 import { api } from "./AxiosService"
 import { eventsService } from "./EventsService"
 
@@ -22,7 +23,7 @@ class AttendeesService {
     async create(accountId, eventId) {
         const res = await api.post('api/attendees', { accountId: accountId, eventId: eventId })
         AppState.attendees = [...AppState.attendees, res.data]
-        eventsService.getActiveEvent(eventId)
+        // eventsService.getActiveEvent(eventId)
         // await api.post('api/attendees/', data)
         // AppState.myEventsAttending = new EventAttendee(accountId)
         // AppState.attendees.push(new AccountAttendee(eventId))
@@ -31,6 +32,7 @@ class AttendeesService {
     async remove(id) {
         const res = await api.delete('api/attendees/' + id)
         AppState.attendees = AppState.attendees.filter(a => a.attendeeId !== id)
+        accountService.getAttendeesForAccount(id)
     }
 }
 

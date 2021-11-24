@@ -23,6 +23,11 @@ class AccountService {
 
     }
   }
+  async getMyAttendance(id) {
+    const res = await api.get('/account/attendees', id)
+    logger.log(res.data)
+    AppState.myEventsAttending = res.data
+  }
 }
 
 export const accountService = new AccountService()

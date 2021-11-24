@@ -2,13 +2,19 @@
   <div class="events container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-2 selectable" @click="filterSelection('concert')">
+        <div class="row text-center bg-dark lighten-40 p-2">
+          <div class="col-md-3 selectable" @@click="filtered = 'concert'">
             Concert
           </div>
-          <div class="col-md-2 selectable">Digital</div>
-          <div class="col-md-2 selectable">Sport</div>
-          <div class="col-md-2 selectable">Convention</div>
+          <div class="col-md-3 selectable" @click="filtered = 'digital'">
+            Digital
+          </div>
+          <div class="col-md-3 selectable" @click="filtered = 'sport'">
+            Sport
+          </div>
+          <div class="col-md-3 selectable" @click="filtered = 'convention'">
+            Convention
+          </div>
         </div>
       </div>
       <div class="col-md-3 text-dark p-2" v-for="e in events" :key="e.id">
@@ -19,15 +25,16 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed, onMounted, ref } from '@vue/runtime-core'
 import Pop from '../utils/Pop'
 import { logger } from '../utils/Logger'
 import { eventsService } from '../services/EventsService'
 import { AppState } from '../AppState'
-
+// TODO Fix filter, error "computed value is readonly"
 export default {
   name: 'Home',
   setup() {
+    const filtered = ref('')
     onMounted(async () => {
       try {
         await eventsService.getAll()
@@ -37,10 +44,9 @@ export default {
       }
     })
     return {
-      events: computed(() => AppState.events),
-      filterSelection() {
-
-      }
+      // filtered,
+      filtered: computed(() => AppState.events.filter(e => e.type === filtered.type)),
+      events: computed(() => AppState.events)
     }
   }
 }

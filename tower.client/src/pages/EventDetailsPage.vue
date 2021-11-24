@@ -7,7 +7,7 @@
           :src="activeEvent.coverImg"
           alt="event image"
         />
-        <p v-if="activeEvent.isCanceled" class="mt-4 bg-warning p-1">
+        <p v-if="activeEvent.isCanceled" class="mt-4 bg-info p-1">
           This event is canceled
         </p>
         <p v-if="activeEvent.capacity == 0" class="mt-4 bg-warning p-1">
@@ -19,7 +19,13 @@
         <p v-if="activeEvent.capacity > 0">
           Remaining Seats: {{ activeEvent.capacity }}
         </p>
-        <button class="btn btn-success" @click="attendEvent()">Attend</button>
+        <button
+          class="btn btn-success disable"
+          v-if="myEventsAttending.eventId !== activeEvent.id"
+          @click="attendEvent(account.id, activeEvent.id)"
+        >
+          Attend
+        </button>
         <button
           title="Cancel Event"
           class="btn btn-danger rounded mx-2"

@@ -5,10 +5,11 @@
       <p v-if="event.capacity == 0" class="mt-4 bg-warning p-1">
         Sorry, This event if full.
       </p>
-      <p v-if="event.isCanceled" class="mt-4 bg-danger p-1">
+      <p v-if="event.isCanceled" class="mt-4 bg-info p-1">
         This event is canceled
       </p>
       <h2>{{ event.name }}</h2>
+      <h6 class="text-uppercase text-dark lighten-60">{{ event.type }}</h6>
       <h5>{{ new Date(event.startDate).toDateString() }}</h5>
       <h5>{{ event.location }}</h5>
 

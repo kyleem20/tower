@@ -81,11 +81,7 @@
               </div>
             </router-link>
             <div
-              class="
-                list-group-item list-group-item-action
-                hoverable
-                text-danger
-              "
+              class="list-group-item list-group-item-action hoverable text-info"
               @click="logout"
             >
               <i class="mdi mdi-logout"></i>
