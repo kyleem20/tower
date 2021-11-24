@@ -22,7 +22,7 @@
         <button class="btn btn-success" @click="attendEvent()">Attend</button>
         <button
           title="Cancel Event"
-          class="btn btn-danger rounded"
+          class="btn btn-danger rounded mx-2"
           v-if="
             activeEvent.creatorId == account.id &&
             !activeEvent.isCanceled &&
@@ -69,6 +69,7 @@ export default {
     })
     return {
       activeEvent: computed(() => AppState.activeEvent),
+      myEventsAttending: computed(() => AppState.myEventsAttending),
       account: computed(() => AppState.account),
       attendees: computed(() => AppState.attendees),
       async remove() {
@@ -82,15 +83,23 @@ export default {
           Pop.toast('Failed to cancel event', 'error')
         }
       },
-      async attendEvent() {
+      async attendEvent(accountId, eventId) {
         try {
           await attendeesService.create(accountId, eventId)
+          logger.error(error)
           Pop.toast('Attend Successful', 'success')
 
         } catch (error) {
           Pop.toast('Failed to attend event', 'error')
         }
-      }
+      },
+      myEventsAttending: computed(() => {
+        if (AppState.account.id) {
+          let found = AppState.attendees.find(a => a.accountId === AppState.account.id)
+          return found ? true : false
+        }
+        return false
+      })
     }
   }
 }

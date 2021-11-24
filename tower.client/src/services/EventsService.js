@@ -1,4 +1,5 @@
 import { AppState } from "../AppState"
+import { router } from "../router"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
@@ -18,17 +19,23 @@ class EventsService {
         AppState.activeEvent = found
     }
 
+    async getActiveEvent(id) {
+        const res = await api.get('api/events/' + id)
+        AppState.activeEvent = res.data
+    }
+
     async getById(id) {
         const res = await api.get('api/events/' + id)
         logger.log(res.data)
         AppState.activeEvent = new Event(res.data)
     }
 
-    async create(event) {
-        const res = await api.post('api/events', event)
+    async create(data) {
+        const res = await api.post('api/events', data)
         logger.log(res.data)
         AppState.events.push(new Event(res.data))
         AppState.activeEvent = new Event(res.data)
+        await router.push({ path: '/events/' + res.data })
     }
 
     async edit(event) {

@@ -9,7 +9,7 @@
         This event is canceled
       </p>
       <h2>{{ event.name }}</h2>
-      <h5>{{ event.startDate }}</h5>
+      <h5>{{ new Date(event.startDate).toDateString() }}</h5>
       <h5>{{ event.location }}</h5>
 
       <p v-if="event.capacity > 0">Remaining Seats: {{ event.capacity }}</p>
@@ -22,13 +22,21 @@
 import { computed } from '@vue/reactivity'
 import { AppState } from '../AppState'
 export default {
-  props: { event: { type: Object, required: true } },
-  setup() {
+  props: { event: { type: Object } },
+  setup(props) {
     return {
       activeEvent: computed(() => AppState.activeEvent),
-      setActiveEvent(props) {
+      myEventsAttending: computed(() => AppState.myEventsAttending),
+      setActiveEvent() {
         AppState.activeEvent = props.event
       },
+      myEventsAttending: computed(() => {
+        if (AppState.account.id) {
+          let found = AppState.attendees.find(a => a.accountId === AppState.account.id)
+          return found ? true : false
+        }
+        return false
+      })
     }
   }
 }

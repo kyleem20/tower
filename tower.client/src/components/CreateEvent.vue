@@ -1,6 +1,6 @@
 <template>
   <div class="CreateEvent">
-    <form @submit.prevent="createEvent()">
+    <form @submit.prevent="createEvent">
       <label class="me-2">Category </label>
       <select v-model="event.type" title="select a type" class="selectable">
         <option>concert</option>
@@ -63,7 +63,13 @@
         required
         v-model="event.coverImg"
       />
-      <button type="submit" title="submit">submit</button>
+      <button
+        class="selectable btn btn-success rounded"
+        type="submit"
+        title="submit"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </template>
@@ -91,7 +97,6 @@ export default {
           await eventsService.create(event.value)
           Modal.getOrCreateInstance(document.getElementById("CreateEvent")).hide()
           router.push({ name: 'EventDetailsPage', params: { id: AppState.activeEvent.id } })
-
 
         } catch (error) {
           logger.error(error)

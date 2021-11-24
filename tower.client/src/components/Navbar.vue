@@ -35,6 +35,10 @@
         >
           Create Event
         </li>
+        <Modal id="CreateEvent">
+          <template #modal-title> Add Event </template>
+          <template #modal-body> <CreateEvent /> </template>
+        </Modal>
       </ul>
       <span class="navbar-text">
         <button

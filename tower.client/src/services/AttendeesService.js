@@ -3,26 +3,29 @@ import { AccountAttendee, EventAttendee } from "../Models/Attendees"
 import { router } from "../router"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
+import { eventsService } from "./EventsService"
 
 class AttendeesService {
 
     async getAttendeesForAccount() {
         const res = await api.get('account/attendees')
         logger.log('accountAttendee', res.data)
-        AppState.myEventsAttending = res.data.map(a => new EventAttendee(a))
+        AppState.myEventsAttending = res.data
     }
 
     async getAttendeesForEvent(eventId) {
         const res = await api.get(`api/events/${eventId}/attendees`)
         logger.log('eventAttendees', res.data)
-        AppState.attendees = res.data.map(a => new AccountAttendee(a))
+        AppState.attendees = res.data
     }
 
     async create(accountId, eventId) {
-        await api.post('api/attendees/', data)
-        AppState.myEventsAttending = new EventAttendee(accountId)
-        AppState.attendees.push(new AccountAttendee(eventId))
-        router.push({ path: '/events/' + eventId })
+        const res = await api.post('api/attendees', { accountId: accountId, eventId: eventId })
+        AppState.attendees = [...AppState.attendees, res.data]
+        eventsService.getActiveEvent(eventId)
+        // await api.post('api/attendees/', data)
+        // AppState.myEventsAttending = new EventAttendee(accountId)
+        // AppState.attendees.push(new AccountAttendee(eventId))
     }
 
     async remove(id) {
